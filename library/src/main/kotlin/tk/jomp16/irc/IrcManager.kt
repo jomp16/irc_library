@@ -39,7 +39,14 @@ import java.io.BufferedWriter
 import java.net.Socket
 import java.net.SocketTimeoutException
 import java.security.SecureRandom
+import java.security.cert.X509Certificate
+import java.security.interfaces.RSAPublicKey
+import java.time.LocalDateTime
+import java.time.ZoneId
+import java.time.format.DateTimeFormatter
+import javax.naming.ldap.LdapName
 import javax.net.ssl.SSLContext
+import javax.net.ssl.SSLSocket
 import javax.net.ssl.SSLSocketFactory
 
 class IrcManager(val ircConfig: IrcConfig) {
@@ -116,8 +123,26 @@ class IrcManager(val ircConfig: IrcConfig) {
 
             ircSocket = factory.createSocket(ircConfig.server, ircConfig.port)
 
-            ircSocket.soTimeout = ircConfig.socketTimeout.toInt()
+            val sslSocket = ircSocket as SSLSocket
+
+            sslSocket.session.peerCertificates[0].let {
+                if (it is X509Certificate) {
+                    val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss")
+
+                    log.debug("Subject: {}", LdapName(it.subjectDN.name).rdns.joinToString())
+                    log.debug("Issuer: {}", LdapName(it.issuerDN.name).rdns.joinToString())
+                    log.debug("Public key algorithm: {} ({} bits)", it.publicKey.algorithm, if (it.publicKey is RSAPublicKey) (it.publicKey as RSAPublicKey).modulus.bitLength() else "unknown")
+                    log.debug("Sign algorithm: {}", it.sigAlgName)
+                    log.debug("Valid since {} until {}", LocalDateTime.ofInstant(it.notBefore.toInstant(), ZoneId.systemDefault()).format(formatter),
+                            LocalDateTime.ofInstant(it.notAfter.toInstant(), ZoneId.systemDefault()).format(formatter))
+                    log.debug("Cipher info: protocol: {}, cipher: {}", sslSocket.session.protocol, sslSocket.session.cipherSuite)
+                }
+            }
+        } else {
+            ircSocket = Socket(ircConfig.server, ircConfig.port)
         }
+
+        ircSocket.soTimeout = ircConfig.socketTimeout.toInt()
 
         log.debug("Started IRC client")
 

@@ -1,0 +1,13 @@
+# Gradle
+.gradle/
+build/
+
+# IntelliJ IDEA
+.idea/
+classes/
+
+# Bot testing library code
+bot/
+
+# Misc
+*.txt

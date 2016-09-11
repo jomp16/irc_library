@@ -22,17 +22,14 @@ package tk.jomp16.irc.handler.handlers
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import tk.jomp16.irc.IrcManager
-import tk.jomp16.irc.channel.ChannelList
 import tk.jomp16.irc.ctcp.CtcpCommand
 import tk.jomp16.irc.handler.IHandler
 import tk.jomp16.irc.parser.IrcParserData
-import tk.jomp16.irc.user.UserList
 
 class PrivateMessageHandler : IHandler {
     private val log: Logger = LoggerFactory.getLogger(javaClass)
 
-    override fun handle(ircManager: IrcManager?, userList: UserList, channelList: ChannelList,
-                        ircParserData: IrcParserData) {
+    override fun handle(ircManager: IrcManager, ircParserData: IrcParserData) {
         // channel:
         // :jomp16!~jomp16@unaffiliated/jomp16 PRIVMSG #jomp16-bot :all_registered_modes
         // IrcParserData(raw=:jomp16!~jomp16@unaffiliated/jomp16 PRIVMSG #jomp16-bot :all_registered_modes, user=User(raw='jomp16!~jomp16@unaffiliated/jomp16', nick='jomp16', user='~jomp16', host='unaffiliated/jomp16'), tags={}, command=PRIVMSG, params=[#jomp16-bot, all_registered_modes])
@@ -41,9 +38,7 @@ class PrivateMessageHandler : IHandler {
         // :jomp16!~jomp16@unaffiliated/jomp16 PRIVMSG jomp16-bot :lolwut
         // IrcParserData(raw=:jomp16!~jomp16@unaffiliated/jomp16 PRIVMSG jomp16-bot :lolwut, user=User(raw='jomp16!~jomp16@unaffiliated/jomp16', nick='jomp16', user='~jomp16', host='unaffiliated/jomp16'), tags={}, command=PRIVMSG, params=[jomp16-bot, lolwut])
 
-        if (ircManager == null) throw Exception("IrcManager is null! I only work on non null IrcManager!")
-
-        val channel = channelList.getOrAddChannel(ircParserData.params[0])
+        val channel = ircManager.channelList.getOrAddChannel(ircParserData.params[0])
         val message = ircParserData.params[1]
 
 //        ircManager?.eventBus?.publishAsync(PrivateMessageListener(ircManager, message))

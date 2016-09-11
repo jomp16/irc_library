@@ -79,9 +79,11 @@ class IrcManager(val ircConfig: IrcConfig) {
     private var finished: Boolean = false
 
     init {
-        addPlugin(EnableSaslPlugin())
-        addPlugin(EnableCapPlugin("multi-prefix"))
-        addPlugin(EnableCapPlugin("userhost-in-names"))
+        if (!ircConfig.test) {
+            addPlugin(EnableSaslPlugin())
+            addPlugin(EnableCapPlugin("multi-prefix"))
+            addPlugin(EnableCapPlugin("userhost-in-names"))
+        }
     }
 
     fun addPlugin(abstractPlugin: AbstractPlugin) {

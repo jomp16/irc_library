@@ -21,10 +21,9 @@ package tk.jomp16.irc.handler.handlers
 
 import org.junit.Assert
 import org.junit.Test
-import tk.jomp16.irc.channel.ChannelList
+import tk.jomp16.irc.dom.ircManager
 import tk.jomp16.irc.modes.Mode
 import tk.jomp16.irc.parser.IrcParser
-import tk.jomp16.irc.user.UserList
 
 class NamesHandlerTest {
     @Test
@@ -35,14 +34,13 @@ class NamesHandlerTest {
 
         Assert.assertNotNull(ircParserData)
 
-        val userList = UserList()
-        val channelList = ChannelList()
+        val ircManager = ircManager { test = true }
         val namesHandler = NamesHandler()
 
-        namesHandler.handle(null, userList, channelList, ircParserData)
+        namesHandler.handle(ircManager, ircParserData)
 
-        channelList.channels.values.forEach { channel ->
-            userList.users.entries.forEach { userEntry ->
+        ircManager.channelList.channels.values.forEach { channel ->
+            ircManager.userList.users.entries.forEach { userEntry ->
                 when (userEntry.key) {
                     "Shinpachi-kun" -> {
                         Assert.assertEquals("Shinpachi-kun", userEntry.value.nick)

@@ -21,10 +21,9 @@ package tk.jomp16.irc.handler.handlers
 
 import org.junit.Assert
 import org.junit.Test
-import tk.jomp16.irc.channel.ChannelList
+import tk.jomp16.irc.dom.ircManager
 import tk.jomp16.irc.modes.Mode
 import tk.jomp16.irc.parser.IrcParser
-import tk.jomp16.irc.user.UserList
 
 class ModeHandlerTest {
     @Test
@@ -41,24 +40,22 @@ class ModeHandlerTest {
         Assert.assertNotNull(ircParserData2)
         Assert.assertNotNull(ircParserData3)
 
-        val userList = UserList()
-        val channelList = ChannelList()
+        val ircManager = ircManager { test = true }
         val modeHandler = ModeHandler()
 
-        val channel1 = channelList.getOrAddChannel("#jomp16-bot")
-        val channel2 = channelList.getOrAddChannel("Shinpachi-kun")
+        val channel1 = ircManager.channelList.getOrAddChannel("#jomp16-bot")
+        val channel2 = ircManager.channelList.getOrAddChannel("Shinpachi-kun")
 
         channel1.addUser("Shinpachi-kun")
         channel2.addUser("Shinpachi-kun")
 
-        modeHandler.handle(null, userList, channelList, ircParserData1)
-        Assert.assertEquals(listOf(Mode.CHANNEL_OWNER, Mode.CHANNEL_FULL_OP),
-                channel1.getOrAddModesUser("Shinpachi-kun"))
+        modeHandler.handle(ircManager, ircParserData1)
+        Assert.assertEquals(listOf(Mode.CHANNEL_OWNER, Mode.CHANNEL_FULL_OP), channel1.getOrAddModesUser("Shinpachi-kun"))
 
-        modeHandler.handle(null, userList, channelList, ircParserData2)
+        modeHandler.handle(ircManager, ircParserData2)
         Assert.assertEquals(listOf(Mode.CHANNEL_OWNER), channel1.getOrAddModesUser("Shinpachi-kun"))
 
-        modeHandler.handle(null, userList, channelList, ircParserData3)
+        modeHandler.handle(ircManager, ircParserData3)
         Assert.assertEquals(listOf(Mode.USER_RESTRICTED), channel2.getOrAddModesUser("Shinpachi-kun"))
     }
 }

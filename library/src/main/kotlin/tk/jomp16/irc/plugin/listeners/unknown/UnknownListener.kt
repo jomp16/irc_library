@@ -23,6 +23,6 @@ import tk.jomp16.irc.IrcManager
 import tk.jomp16.irc.parser.IrcParserData
 
 data class UnknownListener(
-        val ircManager: IrcManager?,
+        val ircManager: IrcManager,
         val ircParserData: IrcParserData
 )

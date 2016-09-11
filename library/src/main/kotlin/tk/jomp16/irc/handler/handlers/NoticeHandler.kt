@@ -22,18 +22,13 @@ package tk.jomp16.irc.handler.handlers
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import tk.jomp16.irc.IrcManager
-import tk.jomp16.irc.channel.ChannelList
 import tk.jomp16.irc.handler.IHandler
 import tk.jomp16.irc.parser.IrcParserData
-import tk.jomp16.irc.user.UserList
 
 class NoticeHandler : IHandler {
     private val log: Logger = LoggerFactory.getLogger(javaClass)
 
-    override fun handle(ircManager: IrcManager?, userList: UserList, channelList: ChannelList,
-                        ircParserData: IrcParserData) {
-        if (ircManager == null) throw Exception("IrcManager is null! I only work on non null IrcManager!")
-
+    override fun handle(ircManager: IrcManager, ircParserData: IrcParserData) {
         if (ircParserData.user.nick.contains("NickServ", ignoreCase = true)) {
             if (ircParserData.params[1].contains("/msg NickServ identify", ignoreCase = true) && !ircManager.authenticated) {
                 // authenticate with good ol' NickServ

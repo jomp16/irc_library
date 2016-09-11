@@ -33,8 +33,6 @@ class EnableSaslPlugin : EnableCapPlugin("sasl") {
 
     @Handler
     fun handleCapACKSASL(capACKListener: CapACKListener) {
-        if (capACKListener.ircManager == null) throw Exception("IrcManager is null! I only work on non null IrcManager!")
-
         if (capACKListener.capabilities.contains("sasl")
                 && capACKListener.ircManager.ircConfig.sasl
                 && !capACKListener.ircManager.authenticated) {
@@ -48,8 +46,6 @@ class EnableSaslPlugin : EnableCapPlugin("sasl") {
 
     @Handler
     fun handleUnknown(unknownListener: UnknownListener) {
-        if (unknownListener.ircManager == null) throw Exception("IrcManager is null! I only work on non null IrcManager!")
-
         if (unknownListener.ircManager.ircConfig.sasl && !unknownListener.ircManager.authenticated) {
             when (unknownListener.ircParserData.command) {
                 "AUTHENTICATE"                                                -> {
@@ -62,7 +58,7 @@ class EnableSaslPlugin : EnableCapPlugin("sasl") {
 
                             unknownListener.ircManager.outputRaw.writeRaw(
                                     "AUTHENTICATE ${DatatypeConverter.printBase64Binary(
-                                            ("${unknownListener.ircManager.ircConfig.saslUser}" +
+                                            (unknownListener.ircManager.ircConfig.saslUser +
                                                     "\u0000${unknownListener.ircManager.ircConfig.saslUser}" +
                                                     "\u0000${unknownListener.ircManager.ircConfig.saslPassword}")
                                                     .toByteArray(Charsets.UTF_8)

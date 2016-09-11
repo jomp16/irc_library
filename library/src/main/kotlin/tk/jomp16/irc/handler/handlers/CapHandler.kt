@@ -20,19 +20,14 @@
 package tk.jomp16.irc.handler.handlers
 
 import tk.jomp16.irc.IrcManager
-import tk.jomp16.irc.channel.ChannelList
 import tk.jomp16.irc.handler.IHandler
 import tk.jomp16.irc.parser.IrcParserData
 import tk.jomp16.irc.plugin.listeners.cap.CapACKListener
 import tk.jomp16.irc.plugin.listeners.cap.CapLSListener
 import tk.jomp16.irc.plugin.listeners.cap.CapNAKListener
-import tk.jomp16.irc.user.UserList
 
 class CapHandler : IHandler {
-    override fun handle(ircManager: IrcManager?, userList: UserList, channelList: ChannelList,
-                        ircParserData: IrcParserData) {
-        if (ircManager == null) throw Exception("IrcManager is null! I only work on non null IrcManager!")
-
+    override fun handle(ircManager: IrcManager, ircParserData: IrcParserData) {
         val capabilities = ircParserData.params[2].split(' ')
 
         when (ircParserData.params[1]) {

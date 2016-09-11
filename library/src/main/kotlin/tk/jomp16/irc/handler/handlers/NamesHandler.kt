@@ -20,21 +20,18 @@
 package tk.jomp16.irc.handler.handlers
 
 import tk.jomp16.irc.IrcManager
-import tk.jomp16.irc.channel.ChannelList
 import tk.jomp16.irc.handler.IHandler
 import tk.jomp16.irc.modes.Mode
 import tk.jomp16.irc.parser.IrcParserData
-import tk.jomp16.irc.user.UserList
 
 class NamesHandler : IHandler {
-    override fun handle(ircManager: IrcManager?, userList: UserList, channelList: ChannelList,
-                        ircParserData: IrcParserData) {
-        val channel = channelList.getOrAddChannel(ircParserData.params[2])
+    override fun handle(ircManager: IrcManager, ircParserData: IrcParserData) {
+        val channel = ircManager.channelList.getOrAddChannel(ircParserData.params[2])
         val users = ircParserData.params[3].split(' ')
 
         users.forEach { userString ->
             val modes = Mode.getModes(userString, false)
-            val user = userList.getOrAddUser(userString.substring(modes.size))
+            val user = ircManager.userList.getOrAddUser(userString.substring(modes.size))
 
             channel.addUser(user)
 

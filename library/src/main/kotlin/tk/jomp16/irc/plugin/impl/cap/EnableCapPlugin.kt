@@ -32,8 +32,6 @@ open class EnableCapPlugin(val capability: String) : AbstractPlugin() {
 
     @Handler(priority = Int.MAX_VALUE)
     fun handleCapLS(capLSListener: CapLSListener) {
-        if (capLSListener.ircManager == null) throw Exception("IrcManager is null! I only work on non null IrcManager!")
-
         if (!capLSListener.capabilities.contains(capability)) return
 
         log.info("Requesting {}...", capability)
@@ -43,8 +41,6 @@ open class EnableCapPlugin(val capability: String) : AbstractPlugin() {
 
     @Handler(priority = Int.MAX_VALUE)
     fun handleCapACK(capACKListener: CapACKListener) {
-        if (capACKListener.ircManager == null) throw Exception("IrcManager is null! I only work on non null IrcManager!")
-
         if (!capACKListener.capabilities.contains(capability)) return
 
         log.info("Requested capability {} successfully!", capability)
@@ -55,8 +51,6 @@ open class EnableCapPlugin(val capability: String) : AbstractPlugin() {
 
     @Handler(priority = Int.MAX_VALUE)
     fun handleCapNAK(capNAKListener: CapNAKListener) {
-        if (capNAKListener.ircManager == null) throw Exception("IrcManager is null! I only work on non null IrcManager!")
-
         if (!capNAKListener.capabilities.contains(capability)) return
 
         log.info("Removed capability {} successfully!", capability)

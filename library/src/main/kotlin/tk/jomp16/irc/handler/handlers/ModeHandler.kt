@@ -20,17 +20,14 @@
 package tk.jomp16.irc.handler.handlers
 
 import tk.jomp16.irc.IrcManager
-import tk.jomp16.irc.channel.ChannelList
 import tk.jomp16.irc.handler.IHandler
 import tk.jomp16.irc.modes.Mode
 import tk.jomp16.irc.parser.IrcParserData
-import tk.jomp16.irc.user.UserList
 
 class ModeHandler : IHandler {
     private var firstMode: Boolean = true
 
-    override fun handle(ircManager: IrcManager?, userList: UserList, channelList: ChannelList,
-                        ircParserData: IrcParserData) {
+    override fun handle(ircManager: IrcManager, ircParserData: IrcParserData) {
         // :Shinpachi-kun!~shinpachi@A628EC77.57E8531E.F6BF86DB.IP MODE Shinpachi-kun :+r
         // IrcParserData(raw=:Shinpachi-kun!~shinpachi@A628EC77.57E8531E.F6BF86DB.IP MODE Shinpachi-kun :+r, user=User(nick='Shinpachi-kun', user='~shinpachi', host='A628EC77.57E8531E.F6BF86DB.IP'), tags={}, command=MODE, params=[Shinpachi-kun, +r])
 
@@ -45,26 +42,24 @@ class ModeHandler : IHandler {
 
             firstMode = false
 
-            ircManager?.ircConfig?.joinChannels?.forEach {
-                ircManager.outputIrc.joinChannel(it)
-            }
+            ircManager.ircConfig.joinChannels.forEach { ircManager.outputIrc.joinChannel(it) }
         }
 
-        val channel = channelList.getOrAddChannel(ircParserData.params[0])
+        val channel = ircManager.channelList.getOrAddChannel(ircParserData.params[0])
         val modesRaw = ircParserData.params[1]
         val modes = Mode.getModes(modesRaw.substring(1), userMode = ircParserData.params.size <= 2)
         val newMode = modesRaw.startsWith('+')
 
         if (ircParserData.params.size > 2) {
             modes.forEachIndexed { i, mode ->
-                val user = userList.getOrAddUser(ircParserData.params[2 + i])
+                val user = ircManager.userList.getOrAddUser(ircParserData.params[2 + i])
 
                 channel.addUser(user)
                 channel.changeModeUser(user, mode, newMode)
             }
         } else {
             modes.forEach {
-                val user = userList.getOrAddUser(ircParserData.params[0])
+                val user = ircManager.userList.getOrAddUser(ircParserData.params[0])
 
                 channel.addUser(user)
                 channel.changeModeUser(user, it, newMode)

@@ -51,7 +51,7 @@ class IrcHandler(val ircManager: IrcManager) {
         if (handlers.containsKey(ircParserData.command)) {
             val handler = handlers[ircParserData.command] ?: return
 
-            handler.handle(ircManager, ircManager.userList, ircManager.channelList, ircParserData)
+            handler.handle(ircManager, ircParserData)
         } else {
             ircManager.eventBus.publishAsync(UnknownListener(ircManager, ircParserData))
         }

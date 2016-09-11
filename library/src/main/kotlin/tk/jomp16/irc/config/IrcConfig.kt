@@ -54,4 +54,6 @@ class IrcConfig {
     var delay: Int = 1000
 
     var joinChannels: Array<String> = arrayOf()
+
+    var test: Boolean = false
 }

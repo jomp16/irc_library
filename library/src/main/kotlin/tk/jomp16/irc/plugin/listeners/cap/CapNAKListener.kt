@@ -22,6 +22,6 @@ package tk.jomp16.irc.plugin.listeners.cap
 import tk.jomp16.irc.IrcManager
 
 data class CapNAKListener(
-        val ircManager: IrcManager?,
+        val ircManager: IrcManager,
         val capabilities: List<String>
 )

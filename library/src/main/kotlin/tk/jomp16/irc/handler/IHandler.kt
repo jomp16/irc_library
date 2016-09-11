@@ -20,10 +20,8 @@
 package tk.jomp16.irc.handler
 
 import tk.jomp16.irc.IrcManager
-import tk.jomp16.irc.channel.ChannelList
 import tk.jomp16.irc.parser.IrcParserData
-import tk.jomp16.irc.user.UserList
 
 interface IHandler {
-    fun handle(ircManager: IrcManager?, userList: UserList, channelList: ChannelList, ircParserData: IrcParserData)
+    fun handle(ircManager: IrcManager, ircParserData: IrcParserData)
 }

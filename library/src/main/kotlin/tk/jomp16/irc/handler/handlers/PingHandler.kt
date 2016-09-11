@@ -20,16 +20,11 @@
 package tk.jomp16.irc.handler.handlers
 
 import tk.jomp16.irc.IrcManager
-import tk.jomp16.irc.channel.ChannelList
 import tk.jomp16.irc.handler.IHandler
 import tk.jomp16.irc.parser.IrcParserData
-import tk.jomp16.irc.user.UserList
 
 class PingHandler : IHandler {
-    override fun handle(ircManager: IrcManager?, userList: UserList, channelList: ChannelList,
-                        ircParserData: IrcParserData) {
-        if (ircManager == null) throw Exception("IrcManager is null! I only work on non null IrcManager!")
-
+    override fun handle(ircManager: IrcManager, ircParserData: IrcParserData) {
         ircManager.outputRaw.writeRaw("PONG :${ircParserData.params[0]}", true)
     }
 }

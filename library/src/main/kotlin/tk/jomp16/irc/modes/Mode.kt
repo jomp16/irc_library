@@ -19,7 +19,7 @@
 
 package tk.jomp16.irc.modes
 
-enum class Mode(val modeSymbol: String, val mode: String) {
+enum class Mode(val modeSymbol: String, vararg val mode: String) {
     // channel modes
     CHANNEL_OWNER("~", "q"),
     CHANNEL_ADMIN("&", "a"),
@@ -29,8 +29,9 @@ enum class Mode(val modeSymbol: String, val mode: String) {
 
     // user modes
     USER_RESTRICTED("", "r"),
-    USER_SECURE_CONN("", "Z"),
-    USER_INVISIBLE("", "i");
+    USER_SECURE_CONN("", "Z", "S"),
+    USER_INVISIBLE("", "i"),
+    USER_CLOAKED("", "x");
 
     companion object {
         fun getModes(raw: String, fromMode: Boolean = true, userMode: Boolean = false): List<Mode> {
@@ -39,10 +40,10 @@ enum class Mode(val modeSymbol: String, val mode: String) {
             // such code, so clever, I liek it!
             while (values()
                     .filter { if (userMode) it.name.startsWith("USER_") else it.name.startsWith("CHANNEL_") }
-                    .any { modes.size < raw.length && raw[modes.size].toString() == if (fromMode) it.mode else it.modeSymbol }) {
+                    .any { modes.size < raw.length && if (fromMode) it.mode.any { raw[modes.size].toString() == it } else raw[modes.size].toString() == it.modeSymbol }) {
                 modes += values()
                         .filter { if (userMode) it.name.startsWith("USER_") else it.name.startsWith("CHANNEL_") }
-                        .filter { raw[modes.size].toString() == if (fromMode) it.mode else it.modeSymbol }
+                        .filter { if (fromMode) it.mode.any { raw[modes.size].toString() == it } else raw[modes.size].toString() == it.modeSymbol }
             }
 
             return modes

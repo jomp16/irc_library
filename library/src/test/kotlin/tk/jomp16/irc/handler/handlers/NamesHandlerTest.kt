@@ -28,9 +28,9 @@ import tk.jomp16.irc.parser.IrcParser
 class NamesHandlerTest {
     @Test
     fun handle() {
-        val string = ":weber.freenode.net 353 Shinpachi-kun = #jomp16-bot :Shinpachi-kun @+jomp16 @ChanServ"
+        val raw = ":weber.freenode.net 353 Shinpachi-kun = #jomp16-bot :Shinpachi-kun @+jomp16 @ChanServ"
 
-        val ircParserData = IrcParser.parse(string)
+        val ircParserData = IrcParser.parse(raw)
 
         Assert.assertNotNull(ircParserData)
 

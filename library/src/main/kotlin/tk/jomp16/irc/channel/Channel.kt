@@ -23,7 +23,7 @@ import tk.jomp16.irc.modes.Mode
 import tk.jomp16.irc.user.User
 
 class Channel(val name: String) {
-    private val users: MutableList<String> = mutableListOf()
+    val users: MutableList<String> = mutableListOf()
     private val userModes: MutableMap<String, MutableList<Mode>> = mutableMapOf()
 
     fun addUser(nick: String) {

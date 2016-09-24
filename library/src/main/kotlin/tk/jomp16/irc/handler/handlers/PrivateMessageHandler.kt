@@ -25,6 +25,7 @@ import tk.jomp16.irc.IrcManager
 import tk.jomp16.irc.ctcp.CtcpCommand
 import tk.jomp16.irc.handler.IHandler
 import tk.jomp16.irc.parser.IrcParserData
+import tk.jomp16.irc.plugin.listeners.privmsg.PrivateMessageListener
 
 class PrivateMessageHandler : IHandler {
     private val log: Logger = LoggerFactory.getLogger(javaClass)
@@ -41,8 +42,6 @@ class PrivateMessageHandler : IHandler {
         val channel = ircManager.channelList.getOrAddChannel(ircParserData.params[0])
         val message = ircParserData.params[1]
 
-//        ircManager?.eventBus?.publishAsync(PrivateMessageListener(ircManager, message))
-
         if (message.startsWith("\u0001") && message.endsWith("\u0001")) {
             // CTCP message
             val strippedMessage = message.removeSurrounding("\u0001")
@@ -57,6 +56,8 @@ class PrivateMessageHandler : IHandler {
             ircManager.outputIrc.sendPrivateMessage(ircParserData.user.nick, "VERSION", true)
         } else if (message == "all_registered_modes") {
             ircManager.outputIrc.sendPrivateMessage(channel, ircManager.channelList.channels.values.joinToString())
+        } else {
+            ircManager.eventBus.publishAsync(PrivateMessageListener(ircManager, message))
         }
     }
 }

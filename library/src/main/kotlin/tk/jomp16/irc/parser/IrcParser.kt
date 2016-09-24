@@ -39,11 +39,11 @@ object IrcParser {
 
             if (indexOfSpace != -1) {
                 val messageTagsRaw = raw.substring(position, indexOfSpace)
-                messageTags += messageTagsRaw.split(';').associate {
+                messageTags.putAll(messageTagsRaw.split(';').associate {
                     val split = it.split('=')
 
                     split[0] to if (split.size > 1) split[1] else ""
-                }
+                })
 
                 position = indexOfSpace + 1
             }
@@ -82,11 +82,11 @@ object IrcParser {
                 // trailing parameter or last string
                 if (raw[position] == ':') position += 1
 
-                params += raw.substring(position).trim()
+                params.add(raw.substring(position).trim())
 
                 position = raw.length
             } else {
-                params += raw.substring(position, indexOfSpace)
+                params.add(raw.substring(position, indexOfSpace))
 
                 position = indexOfSpace + 1
             }

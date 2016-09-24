@@ -41,7 +41,7 @@ class OutputCap(val ircManager: IrcManager) {
     fun sendRequest(capRequested: String) {
         if (requestedCapabilities.contains(capRequested)) return
 
-        requestedCapabilities += capRequested
+        requestedCapabilities.add(capRequested)
 
         ircManager.outputRaw.writeRaw("CAP REQ :$capRequested")
 

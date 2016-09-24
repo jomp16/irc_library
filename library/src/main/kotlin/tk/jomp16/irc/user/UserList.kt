@@ -25,7 +25,7 @@ class UserList {
     fun getOrAddUser(raw: String): User {
         val user = User(raw)
 
-        if (!users.containsKey(user.nick) || (user.raw != user.nick && users[user.nick] != user)) users += user.nick to user
+        if (!users.containsKey(user.nick) || (user.raw != user.nick && users[user.nick] != user)) users.put(user.nick, user)
 
         return user
     }

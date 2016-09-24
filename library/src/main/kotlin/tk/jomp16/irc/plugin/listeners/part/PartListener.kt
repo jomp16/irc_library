@@ -17,14 +17,10 @@
  * along with irc_library. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package tk.jomp16.irc.channel
+package tk.jomp16.irc.plugin.listeners.part
 
-class ChannelList {
-    val channels: MutableMap<String, Channel> = mutableMapOf()
+import tk.jomp16.irc.IrcManager
+import tk.jomp16.irc.channel.Channel
+import tk.jomp16.irc.user.User
 
-    fun getOrAddChannel(name: String): Channel {
-        if (!channels.containsKey(name)) channels.put(name, Channel(name))
-
-        return channels[name]!!
-    }
-}
+data class PartListener(val ircManager: IrcManager, val user: User, val channel: Channel, val reason: String)

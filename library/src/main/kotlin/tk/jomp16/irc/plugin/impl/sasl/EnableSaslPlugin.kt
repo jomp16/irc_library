@@ -33,12 +33,10 @@ class EnableSaslPlugin : EnableCapPlugin("sasl") {
 
     @Handler
     fun handleCapACKSASL(capACKListener: CapACKListener) {
-        if (capACKListener.capabilities.contains("sasl")
-                && capACKListener.ircManager.ircConfig.sasl
-                && !capACKListener.ircManager.authenticated) {
+        if (capACKListener.capabilities.contains("sasl") && capACKListener.ircManager.ircConfig.sasl && !capACKListener.ircManager.authenticated) {
             log.info("Requesting PLAIN authentication algorithm...")
 
-            capACKListener.ircManager.outputCap.requestedCapabilities += "sasl"
+            capACKListener.ircManager.outputCap.requestedCapabilities.add("sasl")
 
             capACKListener.ircManager.outputRaw.writeRaw("AUTHENTICATE PLAIN", true)
         }
@@ -80,8 +78,7 @@ class EnableSaslPlugin : EnableCapPlugin("sasl") {
                 }
                 IrcNumericConstants.ERR_SASLFAIL.numericCommand.toString()    -> {
                     if (!unknownListener.ircManager.authenticated && unknownListener.ircManager.ircConfig.sasl) {
-                        log.info("Couldn't authenticate as {} with SASL!",
-                                unknownListener.ircManager.ircConfig.saslUser)
+                        log.info("Couldn't authenticate as {} with SASL!", unknownListener.ircManager.ircConfig.saslUser)
 
                         unknownListener.ircManager.outputCap.requestedCapabilities -= "sasl"
 

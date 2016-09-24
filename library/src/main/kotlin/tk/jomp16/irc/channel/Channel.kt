@@ -27,11 +27,22 @@ class Channel(val name: String) {
     private val userModes: MutableMap<String, MutableList<Mode>> = mutableMapOf()
 
     fun addUser(nick: String) {
-        if (!users.contains(nick)) users += nick
+        if (!users.contains(nick)) users.add(nick)
     }
 
     fun addUser(user: User) {
         addUser(user.nick)
+    }
+
+    fun removeUser(nick: String) {
+        if (!users.contains(nick)) throw Exception("No user $nick found on this channel!")
+        if (userModes.containsKey(nick)) userModes.remove(nick)
+
+        users.remove(nick)
+    }
+
+    fun removeUser(user: User) {
+        removeUser(user.nick)
     }
 
     fun changeModeUser(user: User, mode: Mode, newMode: Boolean) {
@@ -43,13 +54,10 @@ class Channel(val name: String) {
 
     fun getOrAddModesUser(nick: String): MutableList<Mode> {
         if (!users.contains(nick)) throw Exception("No user $nick found on this channel!")
-
         if (!userModes.containsKey(nick)) userModes.put(nick, mutableListOf())
 
         return userModes[nick]!!
     }
 
-    override fun toString(): String {
-        return "Channel(name='$name', users=$users, userModes=$userModes)"
-    }
+    override fun toString() = "Channel(name='$name', users=$users, userModes=$userModes)"
 }

@@ -45,7 +45,7 @@ open class EnableCapPlugin(val capability: String) : AbstractPlugin() {
 
         log.info("Requested capability {} successfully!", capability)
 
-        capACKListener.ircManager.outputCap.capabilities += capability
+        capACKListener.ircManager.outputCap.capabilities.add(capability)
         capACKListener.ircManager.outputCap.requestedCapabilities -= capability
     }
 

@@ -89,7 +89,7 @@ class IrcManager(val ircConfig: IrcConfig) {
     fun addPlugin(abstractPlugin: AbstractPlugin) {
         if (plugins.contains(abstractPlugin)) return
 
-        plugins += abstractPlugin
+        plugins.add(abstractPlugin)
 
         abstractPlugin.onCreate(this)
 

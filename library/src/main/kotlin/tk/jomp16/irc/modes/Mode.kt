@@ -41,9 +41,9 @@ enum class Mode(val modeSymbol: String, vararg val mode: String) {
             while (values()
                     .filter { if (userMode) it.name.startsWith("USER_") else it.name.startsWith("CHANNEL_") }
                     .any { modes.size < raw.length && if (fromMode) it.mode.any { raw[modes.size].toString() == it } else raw[modes.size].toString() == it.modeSymbol }) {
-                modes += values()
+                modes.addAll(values()
                         .filter { if (userMode) it.name.startsWith("USER_") else it.name.startsWith("CHANNEL_") }
-                        .filter { if (fromMode) it.mode.any { raw[modes.size].toString() == it } else raw[modes.size].toString() == it.modeSymbol }
+                        .filter { if (fromMode) it.mode.any { raw[modes.size].toString() == it } else raw[modes.size].toString() == it.modeSymbol })
             }
 
             return modes

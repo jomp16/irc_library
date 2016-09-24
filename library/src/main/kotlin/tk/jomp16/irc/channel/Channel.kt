@@ -35,8 +35,10 @@ class Channel(val name: String) {
     }
 
     fun changeModeUser(user: User, mode: Mode, newMode: Boolean) {
-        if (newMode) getOrAddModesUser(user.nick).add(mode)
-        else getOrAddModesUser(user.nick).remove(mode)
+        getOrAddModesUser(user.nick).apply {
+            if (newMode && !contains(mode)) add(mode)
+            else if (contains(mode)) remove(mode)
+        }
     }
 
     fun getOrAddModesUser(nick: String): MutableList<Mode> {

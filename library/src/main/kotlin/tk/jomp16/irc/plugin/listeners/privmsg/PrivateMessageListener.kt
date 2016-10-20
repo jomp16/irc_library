@@ -20,9 +20,13 @@
 package tk.jomp16.irc.plugin.listeners.privmsg
 
 import tk.jomp16.irc.IrcManager
+import tk.jomp16.irc.channel.Channel
+import tk.jomp16.irc.user.User
 
-// todo
+// todo: add helper methods. Like a function to reply an user (either with PRIVMSG or NOTICE), with or without username on start of message. Stuffs.
 data class PrivateMessageListener(
         val ircManager: IrcManager,
+        val user: User,
+        val channel: Channel,
         val message: String
 )

@@ -53,12 +53,10 @@ class PrivateMessageHandler : IHandler {
                 CtcpCommand.VERSION -> ircManager.outputIrc.sendNotice(ircParserData.user.nick, "VERSION ${BuildConfig.NAME} ${BuildConfig.VERSION}", true)
                 else                -> log.debug("I don't know how to handle that CTCP {} command!", ctcpCommand)
             }
-        } else if (message == "ctcp_version") {
-            ircManager.outputIrc.sendPrivateMessage(ircParserData.user.nick, "VERSION", true)
-        } else if (message == "all_registered_modes") {
-            ircManager.outputIrc.sendPrivateMessage(channel, ircManager.channelList.channels.values.joinToString())
+
+            // todo: add CTCP event listener
         } else {
-            ircManager.eventBus.publishAsync(PrivateMessageListener(ircManager, message))
+            ircManager.eventBus.publishAsync(PrivateMessageListener(ircManager, ircParserData.user, channel, message))
         }
     }
 }

@@ -21,7 +21,8 @@ package tk.jomp16.irc.handler.handlers
 
 import org.junit.Assert
 import org.junit.Test
-import tk.jomp16.irc.dom.ircManager
+import tk.jomp16.irc.IrcManager
+import tk.jomp16.irc.config.IrcConfig
 import tk.jomp16.irc.modes.Mode
 import tk.jomp16.irc.parser.IrcParser
 
@@ -34,7 +35,7 @@ class NamesHandlerTest {
 
         Assert.assertNotNull(ircParserData)
 
-        val ircManager = ircManager { test = true }
+        val ircManager = IrcManager(IrcConfig().apply { test = true })
         val namesHandler = NamesHandler()
 
         namesHandler.handle(ircManager, ircParserData)

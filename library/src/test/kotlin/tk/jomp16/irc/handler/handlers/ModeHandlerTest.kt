@@ -21,7 +21,8 @@ package tk.jomp16.irc.handler.handlers
 
 import org.junit.Assert
 import org.junit.Test
-import tk.jomp16.irc.dom.ircManager
+import tk.jomp16.irc.IrcManager
+import tk.jomp16.irc.config.IrcConfig
 import tk.jomp16.irc.modes.Mode
 import tk.jomp16.irc.parser.IrcParser
 
@@ -40,7 +41,7 @@ class ModeHandlerTest {
         Assert.assertNotNull(ircParserData2)
         Assert.assertNotNull(ircParserData3)
 
-        val ircManager = ircManager { test = true }
+        val ircManager = IrcManager(IrcConfig().apply { test = true })
         val modeHandler = ModeHandler()
 
         val channel1 = ircManager.channelList.getOrAddChannel("#jomp16-bot")

@@ -21,7 +21,8 @@ package tk.jomp16.irc.handler.handlers
 
 import org.junit.Assert
 import org.junit.Test
-import tk.jomp16.irc.dom.ircManager
+import tk.jomp16.irc.IrcManager
+import tk.jomp16.irc.config.IrcConfig
 import tk.jomp16.irc.parser.IrcParser
 
 class JoinHandlerTest {
@@ -30,7 +31,7 @@ class JoinHandlerTest {
         val raw = ":Shinpachi-kun!~shinpachi@A92D18A2.267422C7.234FB82F.IP JOIN :#jomp16-bot"
         val ircParserData = IrcParser.parse(raw)
 
-        val ircManager = ircManager { test = true }
+        val ircManager = IrcManager(IrcConfig().apply { test = true })
         val joinHandler = JoinHandler()
 
         joinHandler.handle(ircManager, ircParserData)

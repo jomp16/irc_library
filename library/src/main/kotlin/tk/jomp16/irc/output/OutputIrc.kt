@@ -22,7 +22,7 @@ package tk.jomp16.irc.output
 import tk.jomp16.irc.IrcManager
 import tk.jomp16.irc.channel.Channel
 
-class OutputIrc(val ircManager: IrcManager) {
+class OutputIrc(private val ircManager: IrcManager) {
     fun sendNotice(target: String, message: String, ctcp: Boolean = false) = ircManager.outputRaw.writeRaw("NOTICE $target :${if (ctcp) "\u0001" else ""}", message, if (ctcp) "\u0001" else "")
 
     fun sendPrivateMessage(target: Channel, message: String, ctcp: Boolean = false) = sendPrivateMessage(target.name, message, ctcp)

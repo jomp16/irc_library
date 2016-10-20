@@ -24,7 +24,7 @@ import org.slf4j.LoggerFactory
 import tk.jomp16.irc.IrcManager
 import java.util.*
 
-class OutputCap(val ircManager: IrcManager) {
+class OutputCap(private val ircManager: IrcManager) {
     private val log: Logger = LoggerFactory.getLogger(javaClass)
 
     private var alreadySentEnd: Boolean = true

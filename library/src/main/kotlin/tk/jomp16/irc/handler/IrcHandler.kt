@@ -27,7 +27,7 @@ import tk.jomp16.irc.handler.handlers.*
 import tk.jomp16.irc.parser.IrcParser
 import tk.jomp16.irc.plugin.listeners.unknown.UnknownListener
 
-class IrcHandler(val ircManager: IrcManager) {
+class IrcHandler(private val ircManager: IrcManager) {
     private val log: Logger = LoggerFactory.getLogger(javaClass)
 
     private val instances: MutableMap<Class<*>, IHandler> = mutableMapOf()

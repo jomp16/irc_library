@@ -71,7 +71,7 @@ class EnableSaslPlugin : EnableCapPlugin("sasl") {
 
                         log.info("Authenticated as {} with SASL!", unknownListener.ircManager.ircConfig.saslUser)
 
-                        unknownListener.ircManager.outputCap.requestedCapabilities -= "sasl"
+                        unknownListener.ircManager.outputCap.requestedCapabilities.remove("sasl")
 
                         unknownListener.ircManager.outputCap.sendEnd()
                     }
@@ -80,7 +80,7 @@ class EnableSaslPlugin : EnableCapPlugin("sasl") {
                     if (!unknownListener.ircManager.authenticated && unknownListener.ircManager.ircConfig.sasl) {
                         log.info("Couldn't authenticate as {} with SASL!", unknownListener.ircManager.ircConfig.saslUser)
 
-                        unknownListener.ircManager.outputCap.requestedCapabilities -= "sasl"
+                        unknownListener.ircManager.outputCap.requestedCapabilities.remove("sasl")
 
                         unknownListener.ircManager.outputCap.sendEnd()
                     }

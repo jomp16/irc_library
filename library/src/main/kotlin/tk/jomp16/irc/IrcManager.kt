@@ -97,7 +97,7 @@ class IrcManager(val ircConfig: IrcConfig) {
     fun removePlugin(abstractPlugin: AbstractPlugin) {
         if (!plugins.contains(abstractPlugin)) return
 
-        plugins -= abstractPlugin
+        plugins.remove(abstractPlugin)
 
         abstractPlugin.onDestroy(this)
 

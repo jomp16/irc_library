@@ -46,7 +46,7 @@ open class EnableCapPlugin(val capability: String) : AbstractPlugin() {
         log.info("Requested capability {} successfully!", capability)
 
         capACKListener.ircManager.outputCap.capabilities.add(capability)
-        capACKListener.ircManager.outputCap.requestedCapabilities -= capability
+        capACKListener.ircManager.outputCap.requestedCapabilities.remove(capability)
     }
 
     @Handler(priority = Int.MAX_VALUE)
@@ -55,7 +55,7 @@ open class EnableCapPlugin(val capability: String) : AbstractPlugin() {
 
         log.info("Removed capability {} successfully!", capability)
 
-        capNAKListener.ircManager.outputCap.capabilities -= capability
-        capNAKListener.ircManager.outputCap.requestedCapabilities -= capability
+        capNAKListener.ircManager.outputCap.capabilities.remove(capability)
+        capNAKListener.ircManager.outputCap.requestedCapabilities.remove(capability)
     }
 }

@@ -17,4 +17,4 @@
  * along with irc_library. If not, see <http://www.gnu.org/licenses/>.
  */
 
-include ':bot', ':library'
+include ':library'

@@ -22,3 +22,7 @@ dependencies {
     compile "org.slf4j:slf4j-api:$slf4j_version"
     compile "net.engio:mbassador:$mbassador_version"
 }
+
+buildConfig {
+    appName = "irc_library"
+}

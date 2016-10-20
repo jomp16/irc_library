@@ -35,7 +35,7 @@ class Channel(val name: String) {
     }
 
     fun removeUser(nick: String) {
-        if (!users.contains(nick)) throw Exception("No user $nick found on this channel!")
+        if (!users.contains(nick)) throw Exception("No user $nick found on channel $name!")
         if (userModes.containsKey(nick)) userModes.remove(nick)
 
         users.remove(nick)

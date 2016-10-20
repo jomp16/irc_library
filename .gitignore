@@ -1,6 +1,7 @@
 # Gradle
 .gradle/
 build/
+settings.gradle
 
 # IntelliJ IDEA
 .idea/
@@ -11,3 +12,4 @@ bot/
 
 # Misc
 *.txt
+config.json

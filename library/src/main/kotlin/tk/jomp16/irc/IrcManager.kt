@@ -76,8 +76,6 @@ class IrcManager(val ircConfig: IrcConfig) {
 
     val eventBus = MBassador<Any>(IPublicationErrorHandler { error -> log.error("An error happened!", error) })
 
-    private var finished: Boolean = false
-
     init {
         if (!ircConfig.test) {
             addPlugin(EnableSaslPlugin())
@@ -131,13 +129,14 @@ class IrcManager(val ircConfig: IrcConfig) {
                 if (it is X509Certificate) {
                     val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss")
 
+                    log.debug("================")
                     log.debug("Subject: {}", LdapName(it.subjectDN.name).rdns.joinToString())
                     log.debug("Issuer: {}", LdapName(it.issuerDN.name).rdns.joinToString())
                     log.debug("Public key algorithm: {} ({} bits)", it.publicKey.algorithm, if (it.publicKey is RSAPublicKey) (it.publicKey as RSAPublicKey).modulus.bitLength() else "unknown")
                     log.debug("Sign algorithm: {}", it.sigAlgName)
-                    log.debug("Valid since {} until {}", LocalDateTime.ofInstant(it.notBefore.toInstant(), ZoneId.systemDefault()).format(formatter),
-                            LocalDateTime.ofInstant(it.notAfter.toInstant(), ZoneId.systemDefault()).format(formatter))
+                    log.debug("Valid since {} until {}", LocalDateTime.ofInstant(it.notBefore.toInstant(), ZoneId.systemDefault()).format(formatter), LocalDateTime.ofInstant(it.notAfter.toInstant(), ZoneId.systemDefault()).format(formatter))
                     log.debug("Cipher info: protocol: {}, cipher: {}", sslSocket.session.protocol, sslSocket.session.cipherSuite)
+                    log.debug("================")
                 }
             }
         } else {
@@ -158,19 +157,20 @@ class IrcManager(val ircConfig: IrcConfig) {
         outputRaw.writeRaw("NICK ${ircConfig.name}", true)
         outputRaw.writeRaw("USER ${ircConfig.ident} 8 * :${ircConfig.realName}", true)
 
-        // todo: please send PING for IRC if a timeout is got
-        while (!finished) {
-            ircReader.let {
+        ircReader.buffered().let {
+            while (true) {
                 try {
-                    ircHandler.handle(it.readLine())
+                    it.lineSequence().forEach { ircHandler.handle(it) }
                 } catch (e: SocketTimeoutException) {
                     outputRaw.writeRaw("PING ${System.currentTimeMillis() / 1000}")
                 } catch (e: Exception) {
-                    finished = true
+                    log.error("An exception happened!", e)
 
                     ircReader.close()
                     ircWriter.close()
                     ircSocket.close()
+
+                    System.exit(1)
                 }
             }
         }

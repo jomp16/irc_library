@@ -17,14 +17,10 @@
  * along with irc_library. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package tk.jomp16.irc.dom
+package tk.jomp16.irc.plugin.listeners.kick
 
 import tk.jomp16.irc.IrcManager
-import tk.jomp16.irc.config.IrcConfig
+import tk.jomp16.irc.channel.Channel
+import tk.jomp16.irc.user.User
 
-fun ircManager(ircConfigInit: IrcConfig.() -> Unit): IrcManager {
-    val ircConfig = IrcConfig()
-    ircConfig.ircConfigInit()
-
-    return IrcManager(ircConfig)
-}
+data class KickListener(val ircManager: IrcManager, val user: User, val channel: Channel, val reason: String)

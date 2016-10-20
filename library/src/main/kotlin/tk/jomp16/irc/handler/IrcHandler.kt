@@ -40,6 +40,7 @@ class IrcHandler(val ircManager: IrcManager) {
             "PRIVMSG" to getInstance(PrivateMessageHandler::class.java),
             "JOIN" to getInstance(JoinHandler::class.java),
             "PART" to getInstance(PartHandler::class.java),
+            "KICK" to getInstance(KickHandler::class.java),
             IrcNumericConstants.RPL_NAMREPLY.numericCommand to getInstance(NamesHandler::class.java)
     )
 

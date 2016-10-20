@@ -21,6 +21,7 @@ package tk.jomp16.irc.handler.handlers
 
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
+import tk.jomp16.irc.BuildConfig
 import tk.jomp16.irc.IrcManager
 import tk.jomp16.irc.ctcp.CtcpCommand
 import tk.jomp16.irc.handler.IHandler
@@ -49,7 +50,7 @@ class PrivateMessageHandler : IHandler {
             val ctcpCommand = CtcpCommand.getCtcpCommand(splitMessage[0].toUpperCase()) ?: return
 
             when (ctcpCommand) {
-                CtcpCommand.VERSION -> ircManager.outputIrc.sendNotice(ircParserData.user.nick, "VERSION irc_library 1.0-SNAPSHOT", true)
+                CtcpCommand.VERSION -> ircManager.outputIrc.sendNotice(ircParserData.user.nick, "VERSION ${BuildConfig.NAME} ${BuildConfig.VERSION}", true)
                 else                -> log.debug("I don't know how to handle that CTCP {} command!", ctcpCommand)
             }
         } else if (message == "ctcp_version") {

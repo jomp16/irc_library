@@ -23,4 +23,9 @@ import tk.jomp16.irc.IrcManager
 import tk.jomp16.irc.channel.Channel
 import tk.jomp16.irc.user.User
 
-data class KickListener(val ircManager: IrcManager, val user: User, val channel: Channel, val reason: String)
+data class KickListener(
+        val ircManager: IrcManager,
+        val user: User,
+        val channel: Channel,
+        val reason: String
+)

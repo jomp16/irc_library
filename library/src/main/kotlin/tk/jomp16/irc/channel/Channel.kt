@@ -19,15 +19,20 @@
 
 package tk.jomp16.irc.channel
 
+import tk.jomp16.irc.IrcManager
 import tk.jomp16.irc.modes.Mode
 import tk.jomp16.irc.user.User
 
-class Channel(val name: String) {
+class Channel(private val ircManager: IrcManager, val name: String) {
     val users: MutableList<String> = mutableListOf()
     private val userModes: MutableMap<String, MutableList<Mode>> = mutableMapOf()
 
+    val usersObject: List<User>
+        get() = ircManager.userList.users.filterKeys { key -> users.any { it == key } }.values.toList()
+
     fun addUser(nick: String) {
         if (!users.contains(nick)) users.add(nick)
+        if (!userModes.containsKey(nick)) userModes.put(nick, mutableListOf())
     }
 
     fun addUser(user: User) {
@@ -54,7 +59,7 @@ class Channel(val name: String) {
 
     fun getOrAddModesUser(nick: String): MutableList<Mode> {
         if (!users.contains(nick)) throw Exception("No user $nick found on this channel!")
-        if (!userModes.containsKey(nick)) userModes.put(nick, mutableListOf())
+        if (!userModes.containsKey(nick)) throw Exception("No user modes for $nick found on this channel!")
 
         return userModes[nick]!!
     }

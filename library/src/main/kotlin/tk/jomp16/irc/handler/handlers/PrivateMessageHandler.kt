@@ -40,7 +40,7 @@ class PrivateMessageHandler : IHandler {
         // :jomp16!~jomp16@unaffiliated/jomp16 PRIVMSG jomp16-bot :lolwut
         // IrcParserData(raw=:jomp16!~jomp16@unaffiliated/jomp16 PRIVMSG jomp16-bot :lolwut, user=User(raw='jomp16!~jomp16@unaffiliated/jomp16', nick='jomp16', user='~jomp16', host='unaffiliated/jomp16'), tags={}, command=PRIVMSG, params=[jomp16-bot, lolwut])
 
-        val channel = ircManager.channelList.getOrAddChannel(ircParserData.params[0])
+        val channel = ircManager.channelList.getOrAddChannel(ircManager, ircParserData.params[0])
         val message = ircParserData.params[1]
 
         if (message.startsWith("\u0001") && message.endsWith("\u0001")) {

@@ -29,7 +29,7 @@ class JoinHandler : IHandler {
         // :Shinpachi-kun!~shinpachi@A92D18A2.267422C7.234FB82F.IP JOIN :#jomp16-bot
         // IrcParserData(server=false, raw=Shinpachi-kun, user=~shinpachi, host=A92D18A2.267422C7.234FB82F.IP, tags={}, command=JOIN, params=[#jomp16-bot])
 
-        val channel = ircManager.channelList.getOrAddChannel(ircParserData.params[0])
+        val channel = ircManager.channelList.getOrAddChannel(ircManager, ircParserData.params[0])
 
         channel.addUser(ircParserData.user)
 

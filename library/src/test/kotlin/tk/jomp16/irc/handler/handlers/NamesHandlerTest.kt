@@ -29,13 +29,13 @@ import tk.jomp16.irc.parser.IrcParser
 class NamesHandlerTest {
     @Test
     fun handle() {
-        val raw = ":weber.freenode.net 353 Shinpachi-kun = #jomp16-bot :Shinpachi-kun @+jomp16 @ChanServ"
+        val ircManager = IrcManager(IrcConfig().apply { test = true })
 
-        val ircParserData = IrcParser.parse(raw)
+        val raw = ":weber.freenode.net 353 Shinpachi-kun = #jomp16-bot :Shinpachi-kun @+jomp16 @ChanServ"
+        val ircParserData = IrcParser.parse(ircManager, raw)
 
         Assert.assertNotNull(ircParserData)
 
-        val ircManager = IrcManager(IrcConfig().apply { test = true })
         val namesHandler = NamesHandler()
 
         namesHandler.handle(ircManager, ircParserData)

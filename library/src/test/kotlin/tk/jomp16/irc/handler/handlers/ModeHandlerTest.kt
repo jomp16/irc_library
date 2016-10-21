@@ -29,23 +29,23 @@ import tk.jomp16.irc.parser.IrcParser
 class ModeHandlerTest {
     @Test
     fun handle() {
+        val ircManager = IrcManager(IrcConfig().apply { test = true })
+
         val raw1 = ":ChanServ!service@rizon.net MODE #jomp16-bot +qo Shinpachi-kun Shinpachi-kun"
         val raw2 = ":ChanServ!service@rizon.net MODE #jomp16-bot -o Shinpachi-kun"
         val raw3 = ":Shinpachi-kun!~shinpachi@A628EC77.57E8531E.F6BF86DB.IP MODE Shinpachi-kun :+r"
-
-        val ircParserData1 = IrcParser.parse(raw1)
-        val ircParserData2 = IrcParser.parse(raw2)
-        val ircParserData3 = IrcParser.parse(raw3)
+        val ircParserData1 = IrcParser.parse(ircManager, raw1)
+        val ircParserData2 = IrcParser.parse(ircManager, raw2)
+        val ircParserData3 = IrcParser.parse(ircManager, raw3)
 
         Assert.assertNotNull(ircParserData1)
         Assert.assertNotNull(ircParserData2)
         Assert.assertNotNull(ircParserData3)
 
-        val ircManager = IrcManager(IrcConfig().apply { test = true })
         val modeHandler = ModeHandler()
 
-        val channel1 = ircManager.channelList.getOrAddChannel("#jomp16-bot")
-        val channel2 = ircManager.channelList.getOrAddChannel("Shinpachi-kun")
+        val channel1 = ircManager.channelList.getOrAddChannel(ircManager, "#jomp16-bot")
+        val channel2 = ircManager.channelList.getOrAddChannel(ircManager, "Shinpachi-kun")
 
         channel1.addUser("Shinpachi-kun")
         channel2.addUser("Shinpachi-kun")

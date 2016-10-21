@@ -41,13 +41,14 @@ class IrcHandler(private val ircManager: IrcManager) {
             "JOIN" to getInstance(JoinHandler::class.java),
             "PART" to getInstance(PartHandler::class.java),
             "KICK" to getInstance(KickHandler::class.java),
+            "QUIT" to getInstance(QuitHandler::class.java),
             IrcNumericConstants.RPL_NAMREPLY.numericCommand to getInstance(NamesHandler::class.java)
     )
 
     fun handle(raw: String) {
         log.debug(raw)
 
-        val ircParserData = IrcParser.parse(raw)
+        val ircParserData = IrcParser.parse(ircManager, raw)
 
         log.debug("{}", ircParserData)
 

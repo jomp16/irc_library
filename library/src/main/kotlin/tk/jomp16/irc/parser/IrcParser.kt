@@ -19,10 +19,11 @@
 
 package tk.jomp16.irc.parser
 
+import tk.jomp16.irc.IrcManager
 import tk.jomp16.irc.user.User
 
 object IrcParser {
-    fun parse(raw: String): IrcParserData {
+    fun parse(ircManager: IrcManager, raw: String): IrcParserData {
         var position: Int = 0
 
         val messageTags: MutableMap<String, String> = mutableMapOf()
@@ -59,7 +60,7 @@ object IrcParser {
             if (indexOfSpace != -1) {
                 val prefixRaw = raw.substring(position, indexOfSpace)
 
-                user = User(prefixRaw, failToHost = true)
+                user = ircManager.userList.getOrAddUser(prefixRaw, failToHost = true)
 
                 position = indexOfSpace + 1
             }

@@ -28,15 +28,16 @@ import tk.jomp16.irc.parser.IrcParser
 class JoinHandlerTest {
     @Test
     fun testJoin() {
-        val raw = ":Shinpachi-kun!~shinpachi@A92D18A2.267422C7.234FB82F.IP JOIN :#jomp16-bot"
-        val ircParserData = IrcParser.parse(raw)
-
         val ircManager = IrcManager(IrcConfig().apply { test = true })
+
+        val raw = ":Shinpachi-kun!~shinpachi@A92D18A2.267422C7.234FB82F.IP JOIN :#jomp16-bot"
+        val ircParserData = IrcParser.parse(ircManager, raw)
+
         val joinHandler = JoinHandler()
 
         joinHandler.handle(ircManager, ircParserData)
 
         Assert.assertEquals(mutableListOf("#jomp16-bot"), ircManager.channelList.channels.keys.toList())
-        Assert.assertEquals(mutableListOf("Shinpachi-kun"), ircManager.channelList.getOrAddChannel("#jomp16-bot").users)
+        Assert.assertEquals(mutableListOf("Shinpachi-kun"), ircManager.channelList.getOrAddChannel(ircManager, "#jomp16-bot").users)
     }
 }

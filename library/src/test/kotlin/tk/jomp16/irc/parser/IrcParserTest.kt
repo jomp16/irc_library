@@ -21,12 +21,16 @@ package tk.jomp16.irc.parser
 
 import org.junit.Assert
 import org.junit.Test
+import tk.jomp16.irc.IrcManager
+import tk.jomp16.irc.config.IrcConfig
 
 class IrcParserTest {
     @Test
     fun parseNormal() {
+        val ircManager = IrcManager(IrcConfig().apply { test = true })
+
         val raw = ":weber.freenode.net 332 Shinpachi-kun #jomp16-bot :Canal para teste de bots | ( ͡° ͜ʖ ͡°) | Kotlin ftw!"
-        val parsed = IrcParser.parse(raw)
+        val parsed = IrcParser.parse(ircManager, raw)
 
         Assert.assertNotNull(parsed)
         Assert.assertEquals("weber.freenode.net", parsed.user.host)
@@ -37,8 +41,10 @@ class IrcParserTest {
 
     @Test
     fun parseTags() {
+        val ircManager = IrcManager(IrcConfig().apply { test = true })
+
         val raw = "@aaa=bbb;ccc;example.com/ddd=eee :raw!ident@host.com PRIVMSG me :Hello"
-        val parsed = IrcParser.parse(raw)
+        val parsed = IrcParser.parse(ircManager, raw)
 
         Assert.assertNotNull(parsed)
         Assert.assertEquals(mapOf("aaa" to "bbb", "ccc" to "", "example.com/ddd" to "eee"), parsed.tags)
@@ -51,8 +57,10 @@ class IrcParserTest {
 
     @Test
     fun parseLongRaw() {
+        val ircManager = IrcManager(IrcConfig().apply { test = true })
+
         val raw = ":irc.rizon.sexy 004 Shinpachi-kun irc.rizon.sexy plexus-4(hybrid-8.1.20) CDGNRSUWagilopqrswxyz BCIMNORSabcehiklmnopqstvz Iabehkloqv"
-        val parsed = IrcParser.parse(raw)
+        val parsed = IrcParser.parse(ircManager, raw)
 
         Assert.assertNotNull(parsed)
     }

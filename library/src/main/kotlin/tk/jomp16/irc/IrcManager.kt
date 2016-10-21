@@ -160,11 +160,17 @@ class IrcManager(val ircConfig: IrcConfig) {
         ircReader.buffered().let {
             while (true) {
                 try {
-                    it.lineSequence().forEach { ircHandler.handle(it) }
+                    it.lineSequence().forEach {
+                        try {
+                            ircHandler.handle(it)
+                        } catch (e: Exception) {
+                            log.error("An exception happened!", e)
+                        }
+                    }
                 } catch (e: SocketTimeoutException) {
                     outputRaw.writeRaw("PING ${System.currentTimeMillis() / 1000}")
                 } catch (e: Exception) {
-                    log.error("An exception happened!", e)
+                    log.error("Ping timeout!", e)
 
                     ircReader.close()
                     ircWriter.close()

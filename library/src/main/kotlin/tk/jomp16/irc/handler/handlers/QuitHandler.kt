@@ -22,19 +22,18 @@ package tk.jomp16.irc.handler.handlers
 import tk.jomp16.irc.IrcManager
 import tk.jomp16.irc.handler.IHandler
 import tk.jomp16.irc.parser.IrcParserData
-import tk.jomp16.irc.plugin.listeners.kick.KickListener
+import tk.jomp16.irc.plugin.listeners.quit.QuitListener
 
-class KickHandler : IHandler {
+class QuitHandler : IHandler {
     override fun handle(ircManager: IrcManager, ircParserData: IrcParserData) {
-        // :jomp16!~jomp16@fire.lord.jomp16 KICK #jomp16-bot hfinch :hfinch
-        // IrcParserData(raw=:jomp16!~jomp16@fire.lord.jomp16 KICK #jomp16-bot hfinch :hfinch, user=User(raw='jomp16!~jomp16@fire.lord.jomp16', nick='jomp16', user='~jomp16', host='fire.lord.jomp16'), tags={}, command=KICK, params=[#jomp16-bot, hfinch, hfinch])
+        // :jomp16-bot!~jomp16@149AE481.D1C7F33E.5651C41B.IP QUIT :
+        // :jomp16-bot!~jomp16@149AE481.D1C7F33E.5651C41B.IP QUIT :bye!
 
-        val channel = ircManager.channelList.getOrAddChannel(ircManager, ircParserData.params[0])
-        val userKicked = ircManager.userList.getOrAddUser(ircParserData.params[1])
-        val reason = ircParserData.params[2]
+        val reason = if (ircParserData.params.isNotEmpty()) ircParserData.params[0] else ""
 
-        channel.removeUser(userKicked)
+        ircManager.userList.removeUser(ircParserData.user)
+        ircManager.channelList.channels.values.filter { it.users.contains(ircParserData.user.nick) }.forEach { it.removeUser(ircParserData.user) }
 
-        ircManager.eventBus.publishAsync(KickListener(ircManager, userKicked, channel, reason))
+        ircManager.eventBus.publishAsync(QuitListener(ircManager, ircParserData.user, reason))
     }
 }

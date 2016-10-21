@@ -22,11 +22,17 @@ package tk.jomp16.irc.user
 class UserList {
     val users: MutableMap<String, User> = mutableMapOf()
 
-    fun getOrAddUser(raw: String): User {
-        val user = User(raw)
+    fun getOrAddUser(raw: String, failToHost: Boolean = false): User {
+        val user = User(raw, failToHost)
 
-        if (!users.containsKey(user.nick) || (user.raw != user.nick && users[user.nick] != user)) users.put(user.nick, user)
+        if (user.nick.isNotEmpty() && (!users.containsKey(user.nick) || user.raw != user.nick && users[user.nick] != user)) users.put(user.nick, user)
 
         return user
+    }
+
+    fun removeUser(user: User) {
+        if (!users.containsKey(user.nick)) throw Exception("No user $user found in users list!")
+
+        users.remove(user.nick)
     }
 }

@@ -29,7 +29,7 @@ class PartHandler : IHandler {
         // :jomp16!~jomp16@fire.lord.jomp16 PART #jomp16-bot :Leaving
         // IrcParserData(raw=:jomp16!~jomp16@fire.lord.jomp16 PART #jomp16-bot :Leaving, user=User(raw='jomp16!~jomp16@fire.lord.jomp16', nick='jomp16', user='~jomp16', host='fire.lord.jomp16'), tags={}, command=PART, params=[#jomp16-bot, Leaving])
 
-        val channel = ircManager.channelList.getOrAddChannel(ircParserData.params[0])
+        val channel = ircManager.channelList.getOrAddChannel(ircManager, ircParserData.params[0])
         val reason = ircParserData.params[1]
 
         channel.removeUser(ircParserData.user)

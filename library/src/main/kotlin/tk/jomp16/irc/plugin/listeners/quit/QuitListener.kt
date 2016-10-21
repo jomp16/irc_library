@@ -17,25 +17,13 @@
  * along with irc_library. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package tk.jomp16.irc.handler.handlers
+package tk.jomp16.irc.plugin.listeners.quit
 
 import tk.jomp16.irc.IrcManager
-import tk.jomp16.irc.handler.IHandler
-import tk.jomp16.irc.modes.Mode
-import tk.jomp16.irc.parser.IrcParserData
+import tk.jomp16.irc.user.User
 
-class NamesHandler : IHandler {
-    override fun handle(ircManager: IrcManager, ircParserData: IrcParserData) {
-        val channel = ircManager.channelList.getOrAddChannel(ircManager, ircParserData.params[2])
-        val users = ircParserData.params[3].split(' ')
-
-        users.forEach { userString ->
-            val modes = Mode.getModes(userString, false)
-            val user = ircManager.userList.getOrAddUser(userString.substring(modes.size))
-
-            channel.addUser(user)
-
-            modes.forEach { channel.changeModeUser(user, it, true) }
-        }
-    }
-}
+data class QuitListener(
+        val ircManager: IrcManager,
+        val user: User,
+        val reason: String
+)

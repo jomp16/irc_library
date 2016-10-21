@@ -19,11 +19,13 @@
 
 package tk.jomp16.irc.channel
 
+import tk.jomp16.irc.IrcManager
+
 class ChannelList {
     val channels: MutableMap<String, Channel> = mutableMapOf()
 
-    fun getOrAddChannel(name: String): Channel {
-        if (!channels.containsKey(name)) channels.put(name, Channel(name))
+    fun getOrAddChannel(ircManager: IrcManager, name: String): Channel {
+        if (!channels.containsKey(name)) channels.put(name, Channel(ircManager, name))
 
         return channels[name]!!
     }

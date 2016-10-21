@@ -45,7 +45,7 @@ class ModeHandler : IHandler {
             ircManager.ircConfig.joinChannels.forEach { ircManager.outputIrc.joinChannel(it) }
         }
 
-        val channel = ircManager.channelList.getOrAddChannel(ircParserData.params[0])
+        val channel = ircManager.channelList.getOrAddChannel(ircManager, ircParserData.params[0])
         val modesRaw = ircParserData.params[1]
         val modes = Mode.getModes(modesRaw.substring(1), userMode = ircParserData.params.size <= 2)
         val newMode = modesRaw.startsWith('+')

@@ -42,7 +42,7 @@ class ModeHandler : IHandler {
 
             firstMode = false
 
-            ircManager.ircConfig.joinChannels.forEach { ircManager.outputIrc.joinChannel(it) }
+            if (!ircManager.ircConfig.joinAfterLogin || ircManager.authenticated) ircManager.ircConfig.joinChannels.forEach { ircManager.outputIrc.joinChannel(it) }
         }
 
         val channel = ircManager.channelList.getOrAddChannel(ircManager, ircParserData.params[0])

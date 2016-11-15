@@ -39,6 +39,8 @@ class NoticeHandler : IHandler {
                 log.info("Authenticated as {}", ircManager.ircConfig.name)
 
                 ircManager.authenticated = true
+
+                if (ircManager.ircConfig.joinAfterLogin) ircManager.ircConfig.joinChannels.forEach { ircManager.outputIrc.joinChannel(it) }
             } else if (ircParserData.params[1].contains("password incorrect", ignoreCase = true) && !ircManager.authenticated) {
                 log.error("Couldn't authenticate as {}", ircManager.ircConfig.name)
             }

@@ -56,4 +56,5 @@ class IrcConfig {
     var joinChannels: Array<String> = arrayOf()
 
     var test: Boolean = false
+    var joinAfterLogin: Boolean = false
 }
